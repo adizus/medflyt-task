@@ -22,6 +22,7 @@ export const getReport = async (req: Request, res: Response) => {
         FROM caregiver
         JOIN visit ON visit.caregiver = caregiver.id
         JOIN patient ON patient.id = visit.patient
+        WHERE visit.date BETWEEN '2021-01-01' AND '2021-12-31'
     `;
     
     let result : QueryResult;
