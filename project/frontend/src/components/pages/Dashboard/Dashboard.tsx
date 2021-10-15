@@ -109,8 +109,6 @@ function sortByCaregivers(report: Report) {
         }
     }
 
-    // let arr = [...caregiversMap.values()];
-    //todo adi check if I can use spread operator
     report.caregivers = Array.from(caregiversMap.values());
 }
 
