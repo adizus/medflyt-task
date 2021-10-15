@@ -72,7 +72,11 @@ function useDashboard(params: { year: number }) {
         fetchReport();
     }, [fetchReport]);
 
-    return { state, actions: { fetchReport } };
+    const onRefresh = function(){
+        fetchReport();
+    };
+
+    return { state, actions: { fetchReport, onRefresh } };
 }
 
 const Dashboard = () => {
@@ -84,7 +88,7 @@ const Dashboard = () => {
         case "Rejected":
             return <ErrorView message={state.error} onClickRetry={actions.fetchReport} />;
         case "Resolved":
-            return <TableView {...state} />;
+            return <TableView {...state} refresh={actions.onRefresh}/>;
         default:
             assertNever(state);
             return <></>;
