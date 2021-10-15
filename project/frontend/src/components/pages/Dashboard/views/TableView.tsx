@@ -1,15 +1,15 @@
 import React from "react";
 import styled from "styled-components/macro";
-import { ReactComponent as MedFlytLogo } from "../../../../assets/logo.svg";
-import { ReactComponent as RefreshIcon } from "../../../../assets/refresh.svg";
+import {ReactComponent as MedFlytLogo} from "../../../../assets/logo.svg";
+import {ReactComponent as RefreshIcon} from "../../../../assets/refresh.svg";
 import Center from "../../../shared/Center";
 import Row from "../../../shared/Row";
 import Button from "../components/Button";
 import None from "../components/None";
-import { PrimaryText } from "../components/PrimaryText";
+import {PrimaryText} from "../components/PrimaryText";
 import RefreshIndicator from "../components/RefreshIndicator";
 import TableBlocks from "../components/TableBlocks";
-import { Report } from "../Dashboard";
+import {Report} from "../Dashboard";
 
 interface Props {
     report: Report;
@@ -34,48 +34,48 @@ const StyledTableView = styled.div`
     gap: 16px;
 `;
 
-const { Table, Tr, Th, Td } = TableBlocks;
+const {Table, Tr, Th, Td} = TableBlocks;
 
 const TableView = (props: Props) => {
     return (
         <StyledTableView>
-            <RefreshIndicator isRefreshing={props.isRefreshing} />
+            <RefreshIndicator isRefreshing={props.isRefreshing}/>
             <Header>
-                <MedFlytLogo />
+                <MedFlytLogo/>
                 <PrimaryText>Year {props.report.year} - caregivers report</PrimaryText>
             </Header>
             <Row justifyContent="flex-end">
                 <Button>
-                    <RefreshIcon />
+                    <RefreshIcon/>
                     <span>Refresh</span>
                 </Button>
             </Row>
             <Table>
                 <thead>
-                    <Tr>
-                        <Th>Caregiver name</Th>
-                        <Th>Patients</Th>
-                    </Tr>
+                <Tr>
+                    <Th>Caregiver name</Th>
+                    <Th>Patients</Th>
+                </Tr>
                 </thead>
                 <tbody>
-                    {props.report.caregivers.map((caregiver, idx) => (
-                        <Tr key={idx}>
-                            <Td>{caregiver.name}</Td>
-                            <Td>
-                                {caregiver.patients.length > 0 ? (
-                                    caregiver.patients
-                                ) : (
-                                    <None />
-                                )}
-                            </Td>
-                        </Tr>
-                    ))}
+                {props.report.caregivers.map((caregiver, idx) => (
+                    <Tr key={idx}>
+                        <Td>{caregiver.name}</Td>
+                        <Td>
+                            {caregiver.patients.length > 0 ? (
+                                caregiver.patients.join(', ')
+                            ) : (
+                                <None/>
+                            )}
+                        </Td>
+                    </Tr>
+                ))}
                 </tbody>
                 {props.report.caregivers.length === 0 ? (
                     <tbody>
-                        <tr>
-                            <td colSpan={2}>No results!</td>
-                        </tr>
+                    <tr>
+                        <td colSpan={2}>No results!</td>
+                    </tr>
                     </tbody>
                 ) : null}
             </Table>

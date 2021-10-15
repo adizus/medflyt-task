@@ -55,12 +55,13 @@ function useDashboard(params: { year: number }) {
         return axios
             .get<unknown>(endpoint(`reports/${params.year}`))
             .then((response) => {
-                if (!resType.is(response)) {
+                if (!resType.is(response.data)) {
                     console.error(PathReporter.report(resType.decode(response)).join(", "));
                     throw new Error("Error");
                 }
 
-                setState({ type: "Resolved", report: response, isRefreshing: false });
+                sortByCaregivers(response.data);
+                setState({ type: "Resolved", report: response.data, isRefreshing: false });
             })
             .catch(() => {
                 setState({ type: "Rejected", error: "Error" });
@@ -89,5 +90,24 @@ const Dashboard = () => {
             return <></>;
     }
 };
+
+function sortByCaregivers(report: Report) {
+    let caregiversMap = new Map();
+    for (let i = 0; i < report.caregivers.length; i++) {
+        let cg = report.caregivers[i];
+        if (caregiversMap.has(cg.name)) {
+            let currentPatientsArray = caregiversMap.get(cg.name).patients;
+            caregiversMap.get(cg.name).patients = currentPatientsArray.concat(cg.patients);
+        }
+        else {
+            caregiversMap.set(cg.name,
+                {name: cg.name, patients: cg.patients})
+        }
+    }
+
+    // let arr = [...caregiversMap.values()];
+    //todo adi check if I can use spread operator
+    report.caregivers = Array.from(caregiversMap.values());
+}
 
 export default Dashboard;
